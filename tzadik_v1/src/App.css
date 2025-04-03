@@ -1,0 +1,98 @@
+/* General Styling */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f7fc;
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2 {
+  color: #333;
+  margin-bottom: 30px; /* More space around headings */
+}
+
+/* Form container */
+.max-w-xl {
+  max-width: 600px;
+  margin: 40px auto; /* Increased space for better positioning */
+  padding: 20px;
+}
+
+/* Input fields and buttons */
+input[type="text"], select {
+  width: 100%;
+  padding: 15px; /* Increased padding for inputs */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  margin-bottom: 20px; /* Increased margin between inputs */
+}
+
+button {
+  width: 100%;
+  padding: 15px; /* Increased padding for button */
+  border-radius: 8px;
+  background-color: #4CAF50;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-top: 20px; /* More space above the button */
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Checkboxes */
+input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 15px; /* Increased space between checkbox and label */
+}
+
+label {
+  margin-bottom: 15px; /* More space between checkbox labels */
+}
+
+/* Styling for the individual submissions */
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 30px; /* More space above the submission list */
+}
+
+li {
+  padding: 20px; /* More padding inside each submission item */
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 20px; /* More space between submission items */
+}
+
+li p {
+  font-size: 14px;
+  margin-bottom: 10px; /* More space between each line inside submission */
+}
+
+.bg-gray-100 {
+  background-color: #f7fafc;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+/* Hover effects */
+li:hover {
+  background-color: #f4f4f4;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 40px; /* More space below the heading */
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 25px; /* More space below the subheading */
+}
