@@ -1,92 +1,172 @@
-import { useState } from "react";
-import './App.css';
+import React, { useState, useEffect } from "react";
+import { saveSubmission, getSubmissions, clearAllSubmissions } from "./firebase";
+import "./App.css";
 
-export default function App() {
-  const [formData, setFormData] = useState({
-    serialNumber: "",
-    hasEquipment1: false,
-    hasEquipment2: false,
-  });
+// Serial numbers and corresponding equipment numbers
+const serialNumbers = {
+  "064": ["346211", "769658"],
+  "082": ["346290", "764442"],
+  "129": ["326269", "769492"],
+  "054": ["346365", "761733"],
+  "085": ["985542", "770210"],
+  "039": ["346160", "769912"],
+};
+
+function App() {
+  const [serialNumber, setSerialNumber] = useState("");
+  const [equipment1, setEquipment1] = useState("");
+  const [equipment2, setEquipment2] = useState("");
+  const [hasEquipment1, setHasEquipment1] = useState(false);
+  const [hasEquipment2, setHasEquipment2] = useState(false);
+  const [statusMessage, setStatusMessage] = useState("");
   const [submissions, setSubmissions] = useState([]);
 
-  const handleChange = (e) => {
-    const { name, type, checked, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  useEffect(() => {
+    async function fetchData() {
+      const data = await getSubmissions();
+      setSubmissions(data);
+    }
+    fetchData();
+  }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmissions([...submissions, formData]);
-    setFormData({ serialNumber: "", hasEquipment1: false, hasEquipment2: false });
+
+    if (!serialNumber) {
+      setStatusMessage("Error: Please select a serial number.");
+      return;
+    }
+
+    try {
+      await saveSubmission(serialNumber, equipment1, equipment2, hasEquipment1, hasEquipment2);
+      setStatusMessage("✅ Submission Successful!");
+
+      // Refresh submissions list
+      const updatedData = await getSubmissions();
+      setSubmissions(updatedData);
+
+      // Reset form
+      setSerialNumber("");
+      setEquipment1("");
+      setEquipment2("");
+      setHasEquipment1(false);
+      setHasEquipment2(false);
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatusMessage("❌ Submission failed. Please try again.");
+    }
   };
 
-  const serialNumbers = ["SN001", "SN002", "SN003", "SN004", "SN005"];
+  const generateText = () => {
+    return submissions
+      .map(
+        (entry) =>
+          `${entry.serialNumber}\nיעת/סיאף:${entry.equipment1} ${entry.hasEquipment1 ? '✔' : '✖'} \nמבן: ${entry.equipment2} ${entry.hasEquipment2 ? '✔' : '✖'}`
+        // `${entry.serialNumber}\nיעת/סיאף:${entry.equipment1}\nמבן: ${entry.equipment2}`
+      )
+      .join("\n----------------\n");
+
+  };
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(generateText());
+    setStatusMessage("✅ Text copied to clipboard!");
+  };
+  // const copyToClipboard = () => {
+  //   const textToCopy = `${serialNumber}\nיעת/סיאף: ${hasEquipment1 ? '✔' : '✖'}  \nמבן: ${hasEquipment2 ? '✔' : '✖'}`;
+    
+  //   // Create a temporary textarea element to hold the text to copy
+  //   const textArea = document.createElement("textarea");
+  //   textArea.value = textToCopy;
+  //   document.body.appendChild(textArea);
+    
+  //   // Select and copy the text
+  //   textArea.select();
+  //   document.execCommand("copy");
+    
+  //   // Remove the temporary textarea element
+  //   document.body.removeChild(textArea);
+    
+  //   alert("Text copied to clipboard!");
+  // };
+
+  // Clear all data after password verification
+  const handleClearAll = async () => {
+    const password = prompt("Enter admin password to clear all data:");
+    if (password === "9363335") {
+      await clearAllSubmissions();
+      setSubmissions([]);
+      setStatusMessage("✅ All data cleared successfully.");
+    } else {
+      setStatusMessage("❌ Incorrect password. Action denied.");
+    }
+  };
+
+  // Handle serial number change
+  const handleSerialNumberChange = (e) => {
+    const selectedSerial = e.target.value;
+    setSerialNumber(selectedSerial);
+    const [equipment1, equipment2] = serialNumbers[selectedSerial] || [];
+    setEquipment1(equipment1 || "");
+    setEquipment2(equipment2 || "");
+  };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 p-6 bg-white shadow-md rounded-lg font-sans">
-      <h1 className="text-2xl font-bold mb-6 text-gray-800">Daily Submission Form</h1>
-      <form onSubmit={handleSubmit} className="space-y-6">
+    <div className="App">
+      <h1>Form Submission</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Serial Number:</label>
+        <select value={serialNumber} onChange={handleSerialNumberChange}>
+          <option value="">Select a serial number</option>
+          {Object.keys(serialNumbers).map((serial) => (
+            <option key={serial} value={serial}>
+              {serial}
+            </option>
+          ))}
+        </select>
+
         <div>
-          <label className="block text-gray-700 font-medium mb-2">Serial Number</label>
-          <select
-            name="serialNumber"
-            value={formData.serialNumber}
-            onChange={handleChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-            required
-          >
-            <option value="">Select Serial Number</option>
-            {serialNumbers.map((sn, index) => (
-              <option key={index} value={sn}>{sn}</option>
-            ))}
-          </select>
-        </div>
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <label className="flex items-center text-gray-700 font-medium">
+          <label>
             <input
               type="checkbox"
-              name="hasEquipment1"
-              checked={formData.hasEquipment1}
-              onChange={handleChange}
-              className="mr-2 w-5 h-5"
+              checked={hasEquipment1}
+              onChange={(e) => setHasEquipment1(e.target.checked)}
             />
-            Has Equipment 1
+            יעת/סיאף ({equipment1})
           </label>
         </div>
-        <div className="bg-gray-100 p-4 rounded-lg">
-          <label className="flex items-center text-gray-700 font-medium">
+
+        <div>
+          <label>
             <input
               type="checkbox"
-              name="hasEquipment2"
-              checked={formData.hasEquipment2}
-              onChange={handleChange}
-              className="mr-2 w-5 h-5"
+              checked={hasEquipment2}
+              onChange={(e) => setHasEquipment2(e.target.checked)}
             />
-            Has Equipment 2
+            מבן ({equipment2})
           </label>
         </div>
-        <button type="submit" className="w-full bg-blue-500 text-white p-3 rounded-lg text-lg font-medium hover:bg-blue-600">
-          Submit
-        </button>
+
+        <button type="submit">Submit</button>
       </form>
 
-      {submissions.length > 0 && (
-        <div className="mt-8 p-6 bg-gray-50 shadow-md rounded-lg">
-          <h2 className="text-xl font-bold mb-4 text-gray-800">Submitted Data</h2>
-          <ul className="divide-y divide-gray-300">
-            {submissions.map((submission, index) => (
-              <li key={index} className="py-3">
-                <p className="text-gray-700">Serial Number: <span className="font-medium">{submission.serialNumber}</span></p>
-                <p className="text-gray-700">Has Equipment 1: <span className="font-medium">{submission.hasEquipment1 ? "Yes" : "No"}</span></p>
-                <p className="text-gray-700">Has Equipment 2: <span className="font-medium">{submission.hasEquipment2 ? "Yes" : "No"}</span></p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {statusMessage && <p>{statusMessage}</p>}
+
+      <h2>Saved Submissions</h2>
+      <textarea
+        value={generateText()}
+        readOnly
+        style={{ width: "100%", height: "120px" }}
+      ></textarea>
+
+      <div className="button-group">
+        <button onClick={copyToClipboard}>Copy to Clipboard</button>
+        <button onClick={handleClearAll} style={{ backgroundColor: "red" }}>
+          Clear All Data
+        </button>
+      </div>
     </div>
   );
 }
+
+export default App;
