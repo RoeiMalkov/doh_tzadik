@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { saveSubmission, getSubmissions, clearAllSubmissions } from "./firebase";
 import "./App.css";
+import { db } from "./firebase";
+import { doc, getDoc } from "firebase/firestore";
 
 // Serial numbers and corresponding equipment numbers
 const serialNumbers = {
@@ -11,6 +13,29 @@ const serialNumbers = {
   "085": ["985542", "770210"],
   "039": ["346160", "769912"],
 };
+// const fetchSerialNumbers = async () => {
+//   const tankIds = ["064", "082", "129", "054", "085", "039"]; // List of document IDs
+//   const serialNumbers = {};
+
+//   for (const tankId of tankIds) {
+//     const docRef = doc(db, "Tanks", tankId);
+//     const docSnap = await getDoc(docRef);
+
+//     if (docSnap.exists()) {
+//       serialNumbers[tankId] = [
+//         docSnap.data().equipment1, // Fetch equipment1
+//         docSnap.data().equipment2, // Fetch equipment2
+//       ];
+//     } else {
+//       console.log(`No document found for tank ID: ${tankId}`);
+//     }
+//   }
+
+//   return serialNumbers;
+// };
+// const serialNumbers = fetchSerialNumbers();
+
+
 
 function App() {
   const [serialNumber, setSerialNumber] = useState("");
@@ -33,13 +58,13 @@ function App() {
     e.preventDefault();
 
     if (!serialNumber) {
-      setStatusMessage("Error: Please select a serial number.");
+      setStatusMessage("Error:תבחר טנק אחי");
       return;
     }
 
     try {
       await saveSubmission(serialNumber, equipment1, equipment2, hasEquipment1, hasEquipment2);
-      setStatusMessage("✅ Submission Successful!");
+      setStatusMessage("✅ הדוח נשלח יאח");
 
       // Refresh submissions list
       const updatedData = await getSubmissions();
@@ -100,7 +125,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         <label>צ טנק:</label>
         <select value={serialNumber} onChange={handleSerialNumberChange}>
-          <option value="">Select a serial number</option>
+          <option value="">בחר מספר טנק</option>
           {Object.keys(serialNumbers).map((serial) => (
             <option key={serial} value={serial}>
               {serial}
@@ -130,7 +155,7 @@ function App() {
           </label>
         </div>
 
-        <button type="submit">אישור</button>
+        <button type="submit">שלח דוח</button>
       </form>
 
       {statusMessage && <p>{statusMessage}</p>}
