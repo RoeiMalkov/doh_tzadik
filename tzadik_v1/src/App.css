@@ -6,6 +6,7 @@
   max-width: 600px;
   margin: 0 auto;
   background-color: #ffffff;
+  text-align: center; /* Centers everything */
 }
 
 /* Heading */
@@ -16,9 +17,16 @@ h1 {
   margin-bottom: 30px;
 }
 
-/* Form Labels & Inputs */
+/* Form Container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Form Labels */
 label {
-  display: block;
   font-size: 16px;
   color: #202124;
   margin-bottom: 10px;
@@ -26,22 +34,22 @@ label {
 
 /* Text Inputs & Dropdown */
 input[type="text"], select {
-  width: 100%;
+  width: 90%;
   padding: 12px;
   font-size: 16px;
   border-radius: 4px;
   border: 1px solid #dcdfe1;
-  box-sizing: border-box;
   background-color: #ffffff;
   margin-bottom: 15px;
+  text-align: center; /* Center input text */
 }
 
 /* Checkbox Container */
 .checkbox-container {
   display: flex;
   align-items: center;
+  justify-content: center; /* Center checkboxes */
   gap: 10px;
-  margin-bottom: 10px;
   font-size: 16px;
   cursor: pointer;
 }
@@ -53,7 +61,6 @@ input[type="text"], select {
   height: 20px;
   border: 2px solid #673AB7; /* Google Forms Purple */
   border-radius: 4px;
-  display: inline-block;
   position: relative;
   cursor: pointer;
   background-color: white;
@@ -81,16 +88,8 @@ input[type="text"], select {
   display: block;
 }
 
-/* Checkbox Label */
-.checkbox-container label {
-  font-size: 16px;
-  color: #202124;
-  cursor: pointer;
-}
-
 /* Buttons */
 button {
-  width: 100%;
   padding: 12px;
   background-color: #673AB7; /* Google Forms Purple */
   color: white;
@@ -98,19 +97,32 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 10px;
-  box-sizing: border-box;
   transition: background 0.3s ease;
+  margin-top: 10px;
+  width: 90%; /* Center and make responsive */
 }
 
+/* Hover Effect */
 button:hover {
   background-color: #5E35B1;
+}
+
+/* Button Container - Centers the Buttons */
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+/* Ensures Buttons are Equal Width */
+.button-container button {
+  flex: 1;
 }
 
 /* Saved Submissions Section */
 h2 {
   font-size: 20px;
-  margin-top: 30px;
   color: #202124;
 }
 
@@ -121,15 +133,7 @@ h2 {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
-}
-
-.saved-submission p {
-  font-size: 16px;
-  margin-bottom: 10px;
-}
-
-.saved-submission strong {
-  color: #673AB7; /* Purple highlight */
+  text-align: center; /* Center submission text */
 }
 
 /* Responsive Design */
@@ -142,19 +146,15 @@ h2 {
     font-size: 22px;
   }
 
-  label {
-    font-size: 14px;
-  }
-
   input[type="text"], select, button {
     font-size: 14px;
   }
 
-  button {
-    padding: 14px;
+  .button-container {
+    flex-direction: column; /* Stack buttons on mobile */
   }
 
-  .saved-submission {
-    padding: 15px;
+  .button-container button {
+    margin: 5px 0; /* Add vertical spacing */
   }
 }

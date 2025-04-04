@@ -96,9 +96,9 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Form Submission</h1>
+      <h1>דוח צ</h1>
       <form onSubmit={handleSubmit}>
-        <label>Serial Number:</label>
+        <label>צ טנק:</label>
         <select value={serialNumber} onChange={handleSerialNumberChange}>
           <option value="">Select a serial number</option>
           {Object.keys(serialNumbers).map((serial) => (
@@ -130,12 +130,12 @@ function App() {
           </label>
         </div>
 
-        <button type="submit">Submit</button>
+        <button type="submit">אישור</button>
       </form>
 
       {statusMessage && <p>{statusMessage}</p>}
 
-      <h2>Saved Submissions</h2>
+      <h2>דוח נוכחי</h2>
       <textarea
         value={generateText()}
         readOnly
@@ -143,9 +143,9 @@ function App() {
       ></textarea>
 
       <div className="button-group">
-        <button onClick={copyToClipboard}>Copy to Clipboard</button>
+        <button onClick={copyToClipboard}>העתק למקלדת</button>
         <button onClick={handleClearAll} style={{ backgroundColor: "red" }}>
-          Clear All Data
+          איפוס ואתחול
         </button>
       </div>
     </div>
