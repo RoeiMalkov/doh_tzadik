@@ -1,153 +1,160 @@
-/* General Styling */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  background-color: #f8f9fa;
-}
-
+/* General Styles */
 .App {
-  width: 90%;
-  max-width: 500px;
-  background: white;
+  font-family: 'Roboto', sans-serif;
   padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  direction: rtl; /* Right-to-left for Hebrew */
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #ffffff;
+}
+
+/* Heading */
+h1 {
   text-align: center;
+  font-size: 24px;
+  color: #202124;
+  margin-bottom: 30px;
 }
 
-/* Form Styling */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-select, input[type="checkbox"], button {
-  font-size: 16px;
-  padding: 8px;
-}
-
+/* Form Labels & Inputs */
 label {
-  font-size: 18px;
-  text-align: left;
   display: block;
+  font-size: 16px;
+  color: #202124;
+  margin-bottom: 10px;
 }
 
-/* Button Styling */
-button {
-  background: #007bff;
-  color: white;
-  border: none;
-  padding: 10px;
-  border-radius: 5px;
+/* Text Inputs & Dropdown */
+input[type="text"], select {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #dcdfe1;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  margin-bottom: 15px;
+}
+
+/* Checkbox Container */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  font-size: 16px;
   cursor: pointer;
 }
 
-button:hover {
-  background: #0056b3;
+/* Custom Checkbox */
+.checkbox-container input[type="checkbox"] {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #673AB7; /* Google Forms Purple */
+  border-radius: 4px;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  background-color: white;
 }
 
-/* Submission Textarea */
-textarea {
-  width: 100%;
-  height: 120px; /* Made smaller */
+/* Checked State */
+.checkbox-container input[type="checkbox"]:checked {
+  background-color: #673AB7;
+  border-color: #673AB7;
+}
+
+/* Checkbox Checkmark */
+.checkbox-container input[type="checkbox"]::after {
+  content: "✔";
   font-size: 14px;
-  margin-top: 10px;
-  resize: none;
+  color: white;
+  position: absolute;
+  left: 4px;
+  top: -1px;
+  display: none;
 }
 
-/* Responsive Design for Mobile */
-@media screen and (max-width: 600px) {
+/* Show Checkmark When Checked */
+.checkbox-container input[type="checkbox"]:checked::after {
+  display: block;
+}
+
+/* Checkbox Label */
+.checkbox-container label {
+  font-size: 16px;
+  color: #202124;
+  cursor: pointer;
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  padding: 12px;
+  background-color: #673AB7; /* Google Forms Purple */
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-sizing: border-box;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background-color: #5E35B1;
+}
+
+/* Saved Submissions Section */
+h2 {
+  font-size: 20px;
+  margin-top: 30px;
+  color: #202124;
+}
+
+/* Submissions Box */
+.saved-submission {
+  background-color: #F1F3F4;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.saved-submission p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.saved-submission strong {
+  color: #673AB7; /* Purple highlight */
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
   .App {
-    width: 95%;
     padding: 15px;
   }
 
-  select, button {
+  h1 {
+    font-size: 22px;
+  }
+
+  label {
     font-size: 14px;
-    padding: 6px;
   }
 
-  textarea {
-    height: 100px; /* Even smaller on mobile */
+  input[type="text"], select, button {
+    font-size: 14px;
   }
-}
 
-.button-group {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
+  button {
+    padding: 14px;
+  }
 
-button {
-  flex: 1;
-  margin: 5px;
-}
-
-button:nth-child(2) {
-  background-color: red;
-}
-
-button:nth-child(2):hover {
-  background-color: darkred;
-}
-
-/* Make sure the whole app handles RTL text properly */
-body {
-  direction: rtl; /* Right-to-left text direction */
-  text-align: right; /* Align text to the right */
-}
-
-.App {
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
-
-/* Fix for checkbox and label in RTL */
-label {
-  display: flex; /* Use flexbox to arrange the checkbox and label inline */
-  align-items: center; /* Vertically center-align the checkbox and text */
-  margin-right: 10px; /* Add space between the checkbox and label text */
-  font-size: 16px;
-  direction: rtl; /* Ensure the direction is RTL */
-}
-
-/* Style the checkbox */
-input[type="checkbox"] {
-  margin-left: 10px; /* Space between checkbox and the label */
-  transform: scale(1.2); /* Slightly enlarge the checkbox for better visibility */
-}
-
-/* Style the serial number input (make it inline with the checkbox) */
-input[type="text"] {
-  margin-left: 10px; /* Add space between the checkbox and serial number */
-  font-size: 16px;
-  padding: 5px;
-  width: auto; /* Allow the serial number input to adjust in size */
-}
-
-/* Make the text area better for displaying text */
-textarea {
-  margin-top: 10px;
-  width: 100%;
-  height: 120px;
-  padding: 10px;
-  font-size: 14px;
-  text-align: right; /* Align text in the textarea */
-  direction: rtl; /* Make the text in the text area RTL */
-}
-
-/* Ensure the form and other elements adjust properly */
-select,
-input[type="checkbox"],
-button {
-  margin: 10px 0;
-  padding: 8px;
-  font-size: 16px;
-  width: 100%; /* Make form inputs full width */
+  .saved-submission {
+    padding: 15px;
+  }
 }

@@ -62,7 +62,6 @@ function App() {
       .map(
         (entry) =>
           `${entry.serialNumber}\nיעת/סיאף:${entry.equipment1} ${entry.hasEquipment1 ? '✔' : '✖'} \nמבן: ${entry.equipment2} ${entry.hasEquipment2 ? '✔' : '✖'}`
-        // `${entry.serialNumber}\nיעת/סיאף:${entry.equipment1}\nמבן: ${entry.equipment2}`
       )
       .join("\n----------------\n");
 
@@ -72,23 +71,7 @@ function App() {
     navigator.clipboard.writeText(generateText());
     setStatusMessage("✅ Text copied to clipboard!");
   };
-  // const copyToClipboard = () => {
-  //   const textToCopy = `${serialNumber}\nיעת/סיאף: ${hasEquipment1 ? '✔' : '✖'}  \nמבן: ${hasEquipment2 ? '✔' : '✖'}`;
-    
-  //   // Create a temporary textarea element to hold the text to copy
-  //   const textArea = document.createElement("textarea");
-  //   textArea.value = textToCopy;
-  //   document.body.appendChild(textArea);
-    
-  //   // Select and copy the text
-  //   textArea.select();
-  //   document.execCommand("copy");
-    
-  //   // Remove the temporary textarea element
-  //   document.body.removeChild(textArea);
-    
-  //   alert("Text copied to clipboard!");
-  // };
+
 
   // Clear all data after password verification
   const handleClearAll = async () => {
@@ -125,7 +108,7 @@ function App() {
           ))}
         </select>
 
-        <div>
+        <div className="checkbox-container">
           <label>
             <input
               type="checkbox"
@@ -136,7 +119,7 @@ function App() {
           </label>
         </div>
 
-        <div>
+        <div className="checkbox-container">
           <label>
             <input
               type="checkbox"
